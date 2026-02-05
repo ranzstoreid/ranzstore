@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ranz Store</title>
+
+<style>
+body{margin:0;font-family:Arial;background:#9dd7ef}
+.header{background:#4f9fc3;color:white;padding:15px;display:flex;justify-content:space-between;font-weight:bold}
+.menu span{display:block;width:26px;height:4px;background:white;margin:5px 0;border-radius:5px}
+.box{background:#4f9fc3;margin:20px;padding:20px;border-radius:15px;color:white;text-align:center}
+.btn{border:3px solid white;padding:15px;border-radius:15px;margin:10px 0;cursor:pointer;font-weight:bold}
+input{width:100%;padding:12px;border:none;border-radius:20px;margin:10px 0;text-align:center}
+.hidden{display:none}
+.price{font-size:22px;font-weight:bold}
+button{background:#ff78b5;border:none;padding:12px 25px;border-radius:25px;color:white;font-size:16px;margin-top:10px}
+img{width:220px;margin-top:10px}
+.info{font-size:14px;color:#333;text-align:center}
+</style>
+</head>
+
+<body>
+
+<div id="home">
+  <div class="header">
+    SELAMAT DATANG DI RANZ STORE
+    <div onclick="toggleMenu()">
+      <div class="menu"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+
+  <div class="box hidden" id="menuBox">
+    <div class="btn" onclick="openWA()">CHAT CS</div>
+  </div>
+
+  <div class="box">
+    <div class="btn" onclick="openBuy()">ROBUX VIA GAMEPASS</div>
+  </div>
+
+  <p class="info">
+  Web ini masih tahap beta. Jika ada kesalahan hubungi CS.  
+  Terima kasih sudah belanja di Ranz Store!
+  </p>
+</div>
+
+<div id="buy" class="hidden">
+  <div class="header">BELI ROBUX</div>
+  <div class="box">
+    <input id="user" placeholder="Username Roblox">
+    <input id="wa" placeholder="Nomor WhatsApp" type="number">
+
+    <p>Pilih Robux</p>
+    <input type="range" min="50" max="1000" step="50" id="slider" value="50">
+    <div id="robuxText">50 Robux</div>
+    <div class="price" id="priceText">Rp 6.000</div>
+
+    <button onclick="showQR()">Beli Sekarang</button>
+  </div>
+</div>
+
+<div id="qrPage" class="hidden">
+  <div class="header">PEMBAYARAN</div>
+  <div class="box">
+    <img src="https://i.imgur.com/xRALV3W.jpeg">
+    <p id="payText"></p>
+
+    <p>
+    Masukkan nominal yang benar.  
+    Pembayaran kurang tidak akan diproses.
+    </p>
+
+    <p>Gampass harus dibuat: <b id="gampassText"></b></p>
+
+    <button onclick="openTutor()">Cara Buat Gampass</button>
+    <button onclick="sendWA()">Saya Sudah Bayar</button>
+  </div>
+</div>
+
+<script>
+
+const rate = 120;
+
+const slider = document.getElementById("slider");
+const robuxText = document.getElementById("robuxText");
+const priceText = document.getElementById("priceText");
+const payText = document.getElementById("payText");
+const gampassText = document.getElementById("gampassText");
+
+function update(){
+  let r = slider.value;
+  robuxText.innerText = r + " Robux";
+  priceText.innerText = "Rp " + (r * rate).toLocaleString("id-ID");
+}
+slider.oninput = update;
+update();
+
+function toggleMenu(){
+  document.getElementById("menuBox").classList.toggle("hidden");
+}
+
+function openWA(){
+  window.location.href="https://wa.me/6283854899020";
+}
+
+function openBuy(){
+  home.classList.add("hidden");
+  buy.classList.remove("hidden");
+}
+
+function showQR(){
+  if(user.value=="" || wa.value==""){
+    alert("Username & WhatsApp wajib diisi!");
+    return;
+  }
+
+  buy.classList.add("hidden");
+  qrPage.classList.remove("hidden");
+
+  let total = slider.value * rate;
+  payText.innerText = "Bayar: Rp " + total.toLocaleString("id-ID");
+
+  let gampass = Math.ceil(slider.value / 0.7);
+  gampassText.innerText = gampass + " Robux";
+}
+
+function openTutor(){
+  window.open("https://vt.tiktok.com/ZSavHtTkm/","_blank");
+}
+
+function sendWA(){
+  let r = slider.value;
+  let total = r * rate;
+  let gampass = Math.ceil(r / 0.7);
+
+  let msg =
+`Halo Admin Ranz Store
+Username: ${user.value}
+WA: ${wa.value}
+Robux: ${r}
+Total Bayar: Rp ${total}
+Gampass: ${gampass} Robux
+
+Saya sudah bayar, ini bukti transfer:`;
+
+  let link = "https://wa.me/6283854899020?text=" + encodeURIComponent(msg);
+  window.location.href = link;
+}
+
+</script>
+</body>
+</html>
